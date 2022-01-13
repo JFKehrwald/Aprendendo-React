@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <hr>
+    <div id="context-api"></div>
+
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script>
+        function myFirstComponent(props)
+        {
+            // React.createElement('tag', {props'class/id' }, 'childs')
+            
+            return React.createElement('h1', {className: 'Title'}, `Olá, ${props.Name}!`)
+        }
+
+        function secondComponent()
+        {
+            const name =  'João';
+            return React.createElement('div', {className: 'container'}, React.createElement(myFirstComponent, {Name: name}))
+        }
+        ReactDOM.render(
+            //React.createElement(component, componentProps, childs)
+            React.createElement(secondComponent),
+            document.getElementById('app')
+        )
+
+        // contex-api
+        const dataContext = React.createContext('User'); // Provider(origem da informação) => consumer(uso da informação) 
+        function Pioneiro()
+        {
+            const user = {
+                name: "João",
+                age : 22,
+                profession: "developer"
+            }
+            return React.createElement(dataContext.Provider, {value: user},
+                React.createElement('div', {className: 'Pioneiro'}, React.createElement(Child1))
+            )
+        }
+
+        function Child1()
+        {
+            return React.createElement('div', {className: 'Child1'}, React.createElement(Child2))
+        }
+
+        function Child2()
+        {
+            return React.createElement('div', {className: 'Child2'}, React.createElement(Child3))
+        
+        }
+
+        function Child3()
+        {
+            return React.createElement(dataContext.Consumer, null,
+            (User) => ( React.createElement('div', {className: 'Child3'},  User.name,', ', User.age, ', ', User.profession)))
+        }
+        ReactDOM.render(
+            //React.createElement(component, componentProps, childs)
+            React.createElement(Pioneiro),
+            document.getElementById('context-api')
+        )
+    </script>
+</body>
+</html>
